@@ -1,9 +1,11 @@
-package h9w.me.link.dodel;
+package h9w.me.link.members.model.repository;
 
 import h9w.me.link.LinkApplication;
 import h9w.me.link.config.JPAConfiguration;
-import h9w.me.link.dodel.entity.Member;
+import h9w.me.link.members.model.dto.MemberDTO;
+import h9w.me.link.members.model.entity.Member;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
@@ -17,10 +19,14 @@ import static org.junit.jupiter.api.Assertions.*;
         JPAConfiguration.class,
         LinkApplication.class
 })
-class TestRepositoryTest {
+class MemberRepositoryTest {
 
-    @Autowired
-    private TestRepository repo;
+    @Autowired private MemberRepository repo;
+    @Autowired private ModelMapper mapper;
+
+    private String logMember(Member member) {
+        return mapper.map(member, MemberDTO.class).toString();
+    }
 
     @Test
     public void initTest() {
@@ -33,6 +39,7 @@ class TestRepositoryTest {
 
         assertNotNull(members);
 
-        members.forEach(System.out::println);
+
+        members.stream().map(v -> { return logMember(v); }).forEach(System.out::println);
     }
 }
